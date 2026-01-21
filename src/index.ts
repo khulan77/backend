@@ -1,6 +1,7 @@
 import cors from "cors";
 import { configDotenv } from "dotenv";
 import express, { Request, Response } from "express";
+import connectToMongoDB from "./mongodb";
 
 configDotenv();
 
@@ -39,7 +40,6 @@ app.delete("/delete-user", (req: Request, res: Response) => {
   const userId = req.body.id;
   res.status(200).send({ message: "User deleted", id: userId });
 });
-
 //list a get endpoint//
 app.get("/list-users", (_req: Request, res: Response) => {
   const users = [
@@ -75,6 +75,7 @@ app.get("/list-users", (_req: Request, res: Response) => {
 //   }
 // });
 
-app.listen(port, () => {
+app.listen(port, async() => {
+  await connectToMongoDB();
   console.log("http://localhost:8000/");
 });
